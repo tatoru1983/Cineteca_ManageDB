@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Map;
 
 public class MainClassProvaIMDB {
 	private static String url = "http://www.omdbapi.com/";
@@ -21,11 +22,14 @@ public class MainClassProvaIMDB {
 		     URLEncoder.encode(season, charset),
 		     URLEncoder.encode(episode, charset));
 		
-		System.out.println(url + "?" + query);
+		System.out.println(url + "?" + query+"&apikey=1e3dd8f8");
 
-		URLConnection connection = new URL(url + "?" + query).openConnection();
+		URLConnection connection = new URL(url + "?" + query+"&apikey=1e3dd8f8").openConnection();
 		connection.setRequestProperty("Accept-Charset", charset);
 		InputStream response = connection.getInputStream();
+
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> jsonMap = mapper.readValue(response, Map.class);
 	}
 
 }
