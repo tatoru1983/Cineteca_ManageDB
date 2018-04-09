@@ -23,6 +23,8 @@ public class Movie implements Serializable{
 	private String awards;
 	private String poster;
 	private List<Rating> ratings;
+	
+	private String titleIta;
 
 	public Movie() {
 		super();
@@ -141,5 +143,11 @@ public class Movie implements Serializable{
 			this.ratings = new ArrayList<Rating>();
 		}
 		this.ratings.add(rating);
+	}
+	public String getTitleIta() {
+		return titleIta;
+	}
+	public void setTitleIta(String titleIta) {
+		this.titleIta = titleIta;
 	}
 }
