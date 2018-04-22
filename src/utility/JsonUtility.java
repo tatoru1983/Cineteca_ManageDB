@@ -1,5 +1,9 @@
 package utility;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -7,7 +11,19 @@ import entity.Movie;
 import entity.Rating;
 
 public class JsonUtility {
+
+	private static Properties props;
+	private static String FOLDER_JSON;
 	
+	static {
+		try{
+			props = PropertiesUtility.getPropValues();
+		}catch(IOException ex) {
+			ex.printStackTrace();
+		}
+		FOLDER_JSON = props.getProperty("FOLDER_JSON");
+	};
+
 	public static Movie getMovieFromJSON(JSONObject jsonObject) {
 		Movie movie = new Movie();
 		movie.setImdbID((String)jsonObject.get("imdbID"));
@@ -24,7 +40,7 @@ public class JsonUtility {
 		movie.setCountry((String)jsonObject.get("Country"));
 		movie.setAwards((String)jsonObject.get("Awards"));
 		movie.setPoster((String)jsonObject.get("Poster"));
-		
+
 		JSONArray ratings= (JSONArray) jsonObject.get("Ratings");
 		for (Object o : ratings) {
 			JSONObject rating = (JSONObject)o;
@@ -32,11 +48,18 @@ public class JsonUtility {
 		}	
 		return movie;
 	}
-	
+
 	public static Rating getRatingFromJSON(JSONObject jsonObject) {
 		Rating rating = new Rating();
 		rating.setSource((String)jsonObject.get("Source"));
 		rating.setValue((String)jsonObject.get("Value"));
 		return rating;
 	}
+
+	/*
+	public static void writeJsonToFile(String dvdNum, List<Movie> movies) throws IOException {
+		FileWriter file = new FileWriter(FOLDER_JSON.concat("DVD_").concat(dvdNum));
+		for
+		file.write(obj.toJSONString());
+	}*/
 }
