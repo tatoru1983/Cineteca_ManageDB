@@ -24,17 +24,7 @@ public class ExcelUtility {
 	private static final int DVD_NUM = 0;
 	private static final int TITLE_ITA = 1;
 	private static final int IMDB_ID = 2;
-	private static Properties props;
 	private static String FILEPATH;
-	
-	static {
-		try{
-			props = PropertiesUtility.getPropValues();
-		}catch(IOException ex) {
-			ex.printStackTrace();
-		}
-		FILEPATH = props.getProperty("FILEPATH");
-	};
 
 	@SuppressWarnings("deprecation")
 	public static List<InfoForJson> readExcel(String filePath) throws IOException {
@@ -65,7 +55,8 @@ public class ExcelUtility {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static List<InfoForJson> readExcelByDvdNum(String dvdNum) throws IOException {
+	public static List<InfoForJson> readExcelByDvdNum(String dvdNum, Properties props) throws IOException {
+		FILEPATH = props.getProperty("FILEPATH");
 		InputStream ExcelFileToRead = new FileInputStream(FILEPATH);
 		List<InfoForJson> result = new ArrayList<InfoForJson>();
 		wb = new XSSFWorkbook(ExcelFileToRead);

@@ -21,24 +21,14 @@ public class IMDBUtility {
 	
 	private static String URL = "";
 	private static String APIKEY = "";
-	private static Properties props;
-	
-	static {
-		try{
-			props = PropertiesUtility.getPropValues();
-		}catch(IOException ex) {
-			ex.printStackTrace();
-		}
-		props.propertyNames();
-		URL = props.getProperty("URL");
-		APIKEY = props.getProperty("APIKEY");
-	};
 	
 	public static String getUrl(String id) {
 		return URL.concat("/?i=").concat(id).concat("&apikey=").concat(APIKEY);
 	}
 	
-	public static List<Movie> getMoviesFromInfos(List<InfoForJson> listJson) throws IOException, ParseException{
+	public static List<Movie> getMoviesFromInfos(List<InfoForJson> listJson, Properties props) throws IOException, ParseException{
+		URL = props.getProperty("URL");
+		APIKEY = props.getProperty("APIKEY");
 		List<Movie> result = new ArrayList<Movie>();
 		for(InfoForJson ifj : listJson) {
 			String url = getUrl(ifj.getIdImdb());
