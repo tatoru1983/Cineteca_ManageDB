@@ -1,6 +1,5 @@
 package utility;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -13,7 +12,7 @@ import entity.Rating;
 public class JsonUtility {
 
 	private static Properties props;
-	private static String FOLDER_JSON;
+	//private static String FOLDER_JSON;
 	
 	static {
 		try{
@@ -21,7 +20,7 @@ public class JsonUtility {
 		}catch(IOException ex) {
 			ex.printStackTrace();
 		}
-		FOLDER_JSON = props.getProperty("FOLDER_JSON");
+		//FOLDER_JSON = props.getProperty("FOLDER_JSON");
 	};
 
 	public static Movie getMovieFromJSON(JSONObject jsonObject) {

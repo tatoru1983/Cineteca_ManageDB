@@ -21,7 +21,7 @@ import utility.JsonUtility;
 public class MainClassProvaIMDB {
 
 	public static void main(String[] args) throws MalformedURLException, IOException, ParseException {
-		IMDBUtility utility = new IMDBUtility();
+		//IMDBUtility utility = new IMDBUtility();
 		JsonUtility jsonUtility = new JsonUtility();
 		InfoForJson a = new InfoForJson("1","Jackie Brown","tt0119396");
 		InfoForJson b = new InfoForJson("1","Le iene","tt0105236");
@@ -33,7 +33,8 @@ public class MainClassProvaIMDB {
 		listJson.add(c);
 		
 		for(InfoForJson ifj : listJson) {
-			String url = utility.getUrl(ifj.getIdImdb());
+			//String url = utility.getUrl(ifj.getIdImdb());
+			String url = IMDBUtility.getUrl(ifj.getIdImdb());
 			URLConnection connection = new URL(url).openConnection();
 			connection.setRequestProperty("Accept-Charset", "UTF-8");
 			InputStream response = connection.getInputStream();

@@ -5,21 +5,25 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import dbentity.Users;
+import dbentity.Film;
 
-public class UsersDAO {
+public class FilmDAO {
 	
 	private Session session;
 	
-	public UsersDAO(Session session) {
+	public FilmDAO(Session session) {
 		super();
 		this.session = session;
 	}
 	
 	@SuppressWarnings("deprecation")
-	public List<Users> getAll(){
-		Query<Users> query = session.createQuery("from Users");
+	public List<Film> getAll(){
+		Query<Film> query = session.createQuery("from Film");
 		return query.list();
+	}
+	
+	public void save(Film film) {
+		session.save(film);
 	}
 
 }
