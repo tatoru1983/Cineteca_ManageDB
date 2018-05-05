@@ -6,12 +6,18 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.json.simple.parser.ParseException;
 
+import dao.FilmDAO;
+import dao.FilmRatingDAO;
 import dbentity.Film;
+import dbentity.FilmRating;
 import entity.InfoForJson;
 import entity.Movie;
 import utility.ExcelUtility;
+import utility.HibernateUtility;
 import utility.IMDBUtility;
 import utility.PropertiesUtility;
 
@@ -33,6 +39,12 @@ public class RunnerExcelToJson {
 		in = new Scanner(System.in);
 		String input = in.nextLine();
 		
+		//DAO
+		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		FilmDAO filmDAO = new FilmDAO(session);
+		FilmRatingDAO filmRatingDAO = new FilmRatingDAO(session);
+		
 		//Read rows from Excel
 		List<InfoForJson> infos = ExcelUtility.readExcelByDvdNum(input, props);
 
@@ -43,9 +55,18 @@ public class RunnerExcelToJson {
 		for(Movie movie : movies) {
 			System.out.println(movie.getTitle() + " - " + movie.getTitleIta());
 			//Transform to DB entities
+			Film film = new Film(new Integer(input), movie);
+			films.add(film);
 		}
 		
+		for(Film film : films) {
+			filmDAO.save(film);
+			for(FilmRating filmRating : film.getFilmRating()) {
+				filmRatingDAO.save(filmRating);
+			}
+		}
 		
+		session.close();
 	}
 
 }

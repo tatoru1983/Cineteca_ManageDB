@@ -8,6 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
 
 import entity.Movie;
 import entity.Rating;
@@ -34,7 +37,9 @@ public class Film implements Serializable {
 	private String awards;
 	private String poster;
 	private String titleIta;
-	
+	private boolean seen;
+	private Integer dvd;
+
 	private List<FilmRating> filmRating;
 
 	public Film() {
@@ -51,7 +56,7 @@ public class Film implements Serializable {
 		this.imdbID = imdbID;
 	}
 
-	@Column(name = "TITLE", unique = true, nullable = false)
+	@Column(name = "TITLE", nullable = false)
 	public String getTitle() {
 		return title;
 	}
@@ -60,7 +65,7 @@ public class Film implements Serializable {
 		this.title = title;
 	}
 
-	@Column(name = "YEAR", unique = true, nullable = true)
+	@Column(name = "YEAR", nullable = true)
 	public String getYear() {
 		return year;
 	}
@@ -69,7 +74,7 @@ public class Film implements Serializable {
 		this.year = year;
 	}
 
-	@Column(name = "RATED", unique = true, nullable = true)
+	@Column(name = "RATED", nullable = true)
 	public String getRated() {
 		return rated;
 	}
@@ -78,7 +83,7 @@ public class Film implements Serializable {
 		this.rated = rated;
 	}
 
-	@Column(name = "RELEASED", unique = true, nullable = true)
+	@Column(name = "RELEASED", nullable = true)
 	public String getReleased() {
 		return released;
 	}
@@ -87,7 +92,7 @@ public class Film implements Serializable {
 		this.released = released;
 	}
 
-	@Column(name = "RUNTIME", unique = true, nullable = true)
+	@Column(name = "RUNTIME", nullable = true)
 	public String getRuntime() {
 		return runtime;
 	}
@@ -96,7 +101,7 @@ public class Film implements Serializable {
 		this.runtime = runtime;
 	}
 
-	@Column(name = "GENRE", unique = true, nullable = true)
+	@Column(name = "GENRE", nullable = true)
 	public String getGenre() {
 		return genre;
 	}
@@ -105,7 +110,7 @@ public class Film implements Serializable {
 		this.genre = genre;
 	}
 
-	@Column(name = "DIRECTOR", unique = true, nullable = true)
+	@Column(name = "DIRECTOR", nullable = true)
 	public String getDirector() {
 		return director;
 	}
@@ -114,7 +119,7 @@ public class Film implements Serializable {
 		this.director = director;
 	}
 
-	@Column(name = "WRITER", unique = true, nullable = true)
+	@Column(name = "WRITER", nullable = true)
 	public String getWriter() {
 		return writer;
 	}
@@ -123,7 +128,7 @@ public class Film implements Serializable {
 		this.writer = writer;
 	}
 
-	@Column(name = "ACTORS", unique = true, nullable = true)
+	@Column(name = "ACTORS", nullable = true)
 	public String getActors() {
 		return actors;
 	}
@@ -132,7 +137,7 @@ public class Film implements Serializable {
 		this.actors = actors;
 	}
 
-	@Column(name = "PLOT", unique = true, nullable = true)
+	@Column(name = "PLOT", nullable = true)
 	public String getPlot() {
 		return plot;
 	}
@@ -141,7 +146,7 @@ public class Film implements Serializable {
 		this.plot = plot;
 	}
 
-	@Column(name = "COUNTRY", unique = true, nullable = true)
+	@Column(name = "COUNTRY", nullable = true)
 	public String getCountry() {
 		return country;
 	}
@@ -150,7 +155,7 @@ public class Film implements Serializable {
 		this.country = country;
 	}
 
-	@Column(name = "AWARDS", unique = true, nullable = true)
+	@Column(name = "AWARDS", nullable = true)
 	public String getAwards() {
 		return awards;
 	}
@@ -159,7 +164,7 @@ public class Film implements Serializable {
 		this.awards = awards;
 	}
 
-	@Column(name = "POSTER", unique = true, nullable = true)
+	@Column(name = "POSTER", nullable = true)
 	public String getPoster() {
 		return poster;
 	}
@@ -168,15 +173,16 @@ public class Film implements Serializable {
 		this.poster = poster;
 	}
 
+	@Column(name = "TITLE_ITA", nullable = false)
 	public String getTitleIta() {
 		return titleIta;
 	}
 
-	@Column(name = "TITLE_ITA", unique = true, nullable = false)
 	public void setTitleIta(String titleIta) {
 		this.titleIta = titleIta;
 	}
 
+	@Transient
 	public List<FilmRating> getFilmRating() {
 		return filmRating;
 	}
@@ -192,7 +198,24 @@ public class Film implements Serializable {
 		this.filmRating.add(filmRating);
 	}
 	
+	@Column(name = "DVD", nullable = false)
+	public Integer getDvd() {
+		return dvd;
+	}
+
+	public void setDvd(Integer dvd) {
+		this.dvd = dvd;
+	}
 	
+	@Column(name = "SEEN", nullable = false)
+	@Type(type = "org.hibernate.type.NumericBooleanType")
+	public boolean isSeen() {
+		return seen;
+	}
+
+	public void setSeen(boolean seen) {
+		this.seen = seen;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -220,7 +243,7 @@ public class Film implements Serializable {
 	}
 
 	//Transform
-	public Film(Movie movie){
+	public Film(Integer dvd, Movie movie){
 		super();
 		//Film info
 		this.imdbID = movie.getImdbID();
@@ -238,6 +261,7 @@ public class Film implements Serializable {
 		this.awards = movie.getAwards();
 		this.poster = movie.getPoster();
 		this.titleIta = movie.getTitleIta();
+		this.dvd = dvd;
 		
 		//Rating info
 		for(Rating rating : movie.getRatings()) {
