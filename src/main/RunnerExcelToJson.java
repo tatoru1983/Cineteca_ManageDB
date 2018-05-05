@@ -22,10 +22,10 @@ import utility.IMDBUtility;
 import utility.PropertiesUtility;
 
 public class RunnerExcelToJson {
-	
+
 	private static Scanner in;
 	private static Properties props;
-	
+
 	static {
 		try{
 			props = PropertiesUtility.getPropValues();
@@ -34,39 +34,51 @@ public class RunnerExcelToJson {
 		}
 	};
 
-	public static void main(String[] args) throws IOException, ParseException {
-		System.out.println("inserire il numero DVD");
-		in = new Scanner(System.in);
-		String input = in.nextLine();
-		
-		//DAO
-		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		FilmDAO filmDAO = new FilmDAO(session);
-		FilmRatingDAO filmRatingDAO = new FilmRatingDAO(session);
-		
-		//Read rows from Excel
-		List<InfoForJson> infos = ExcelUtility.readExcelByDvdNum(input, props);
+	public static void main(String[] args) {
+		Session session = null;
+		try {
+			String input = "4";
 
-		//JSON information
-		List<Movie> movies = IMDBUtility.getMoviesFromInfos(infos, props);
-		
-		List<Film> films = new ArrayList<Film>();
-		for(Movie movie : movies) {
-			System.out.println(movie.getTitle() + " - " + movie.getTitleIta());
-			//Transform to DB entities
-			Film film = new Film(new Integer(input), movie);
-			films.add(film);
-		}
-		
-		for(Film film : films) {
-			filmDAO.save(film);
-			for(FilmRating filmRating : film.getFilmRating()) {
-				filmRatingDAO.save(filmRating);
+			//DAO
+			SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+			session = sessionFactory.openSession();
+			FilmDAO filmDAO = new FilmDAO(session);
+			FilmRatingDAO filmRatingDAO = new FilmRatingDAO(session);
+
+			//Read rows from Excel
+			List<InfoForJson> infos = ExcelUtility.readExcelByDvdNum(input, props);
+
+			//JSON information
+			List<Movie> movies = IMDBUtility.getMoviesFromInfos(infos, props);
+
+			List<Film> films = new ArrayList<Film>();
+			for(Movie movie : movies) {
+				System.out.println(movie.getTitle() + " - " + movie.getTitleIta());
+				//Transform to DB entities
+				Film film = new Film(new Integer(input), movie);
+				films.add(film);
 			}
+
+			for(Film film : films) {
+				filmDAO.save(film);
+				for(FilmRating filmRating : film.getFilmRating()) {
+					filmRatingDAO.save(filmRating);
+				}
+			}
+			System.out.println("Inserted!");
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			if (session != null) {
+				session.close();
+				System.out.println("Terminated!");
+			}
+			System.exit(0);
 		}
-		
-		session.close();
 	}
+
+	/*public static void main(String[] args) {
+		System.out.println("ciao");
+	}*/
 
 }

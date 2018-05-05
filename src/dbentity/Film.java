@@ -17,7 +17,7 @@ import entity.Rating;
 
 
 @Entity
-@Table(name = "FILM")
+@Table(name = "FILM", schema = "cineteca")
 public class Film implements Serializable {
 	
 	private static final long serialVersionUID = -7091875416407053157L;

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import entity.Rating;
 
 @Entity
-@Table(name="FILM_RATING")
+@Table(name="FILM_RATING", schema = "cineteca")
 public class FilmRating implements Serializable {
 
 	private static final long serialVersionUID = -4595314657033916254L;
