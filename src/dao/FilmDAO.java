@@ -38,6 +38,20 @@ public class FilmDAO {
 		}
 		return listFilm;
 	}
+	
+	public void deleteFilmByDVD(Integer numDVD){
+		FilmRatingDAO filmRatingDAO = new FilmRatingDAO(session);
+		TypedQuery<Film> query = session.createQuery("from Film where dvd = ?");
+		query.setParameter(0, numDVD);
+		List<Film> listFilm = query.getResultList();
+		for(Film film : listFilm) {
+			List<FilmRating> filmRating = filmRatingDAO.getRatingsByFilm(film);
+			for(FilmRating rating : filmRating) {
+				filmRatingDAO.delete(rating);
+			}
+			delete(film);
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public Film getFilmById(String imdbID) {
@@ -55,6 +69,19 @@ public class FilmDAO {
 		 try {
 		     tx = session.beginTransaction();
 		     session.save(film);
+		     tx.commit();
+		 }
+		 catch (Exception e) {
+		     if (tx!=null) tx.rollback();
+		     throw e;
+		 }
+	}
+	
+	public void delete(Film film) {
+		 Transaction tx = null;
+		 try {
+		     tx = session.beginTransaction();
+		     session.delete(film);
 		     tx.commit();
 		 }
 		 catch (Exception e) {

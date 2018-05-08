@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,24 +18,36 @@ import entity.InfoForJson;
 import entity.Movie;
 import utility.IMDBUtility;
 import utility.JsonUtility;
+import utility.PropertiesUtility;
 
 public class MainClassProvaIMDB {
+	private static Properties props;
+
+	static {
+		try{
+			props = PropertiesUtility.getPropValues();
+		}catch(IOException ex) {
+			ex.printStackTrace();
+		}
+	};
 
 	public static void main(String[] args) throws MalformedURLException, IOException, ParseException {
 		//IMDBUtility utility = new IMDBUtility();
 		JsonUtility jsonUtility = new JsonUtility();
-		InfoForJson a = new InfoForJson("1","Jackie Brown","tt0119396");
-		InfoForJson b = new InfoForJson("1","Le iene","tt0105236");
-		InfoForJson c = new InfoForJson("1","Pulp fiction","tt0110912");
+		InfoForJson a = new InfoForJson("1","Il grande botto","tt0242492");
+		InfoForJson b = new InfoForJson("1","Io speriamo che me la cavo","tt0107225");
+		InfoForJson c = new InfoForJson("1","La gente vuole ridere","tt4874670");
+		InfoForJson d = new InfoForJson("1","Morte di un matematico napoletano","tt0104918");
 		
 		List<InfoForJson> listJson = new ArrayList<InfoForJson>();
 		listJson.add(a);
 		listJson.add(b);
 		listJson.add(c);
+		listJson.add(d);
 		
 		for(InfoForJson ifj : listJson) {
 			//String url = utility.getUrl(ifj.getIdImdb());
-			String url = IMDBUtility.getUrl(ifj.getIdImdb());
+			String url = IMDBUtility.getUrl(ifj.getIdImdb(), props);
 			URLConnection connection = new URL(url).openConnection();
 			connection.setRequestProperty("Accept-Charset", "UTF-8");
 			InputStream response = connection.getInputStream();

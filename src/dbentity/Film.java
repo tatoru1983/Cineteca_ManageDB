@@ -40,7 +40,7 @@ public class Film implements Serializable {
 	private boolean seen;
 	private Integer dvd;
 
-	private List<FilmRating> filmRating;
+	private List<FilmRating> filmRating = new ArrayList<FilmRating>();
 
 	public Film() {
 		super();
@@ -264,9 +264,11 @@ public class Film implements Serializable {
 		this.dvd = dvd;
 		
 		//Rating info
-		for(Rating rating : movie.getRatings()) {
-			FilmRating filmRating = new FilmRating(this.imdbID, rating);
-			this.addFilmRating(filmRating);
+		if(movie.getRatings()!=null) {
+			for(Rating rating : movie.getRatings()) {
+				FilmRating filmRating = new FilmRating(this.imdbID, rating);
+				this.addFilmRating(filmRating);
+			}
 		}
 	}
 }

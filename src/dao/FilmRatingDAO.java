@@ -38,6 +38,19 @@ public class FilmRatingDAO {
 		 }
 	}
 	
+	public void delete(FilmRating rating) {
+		 Transaction tx = null;
+		 try {
+		     tx = session.beginTransaction();
+		     session.delete(rating);
+		     tx.commit();
+		 }
+		 catch (Exception e) {
+		     if (tx!=null) tx.rollback();
+		     throw e;
+		 }
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<FilmRating> getRatingsByFilm(Film film){
 		TypedQuery<FilmRating> query = session.createQuery("from FilmRating fr where fr.id.imdbID = ?");
