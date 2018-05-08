@@ -21,7 +21,7 @@ import utility.HibernateUtility;
 import utility.IMDBUtility;
 import utility.PropertiesUtility;
 
-public class RunnerExcelToJson {
+public class RunnerExcelToDB {
 
 	private static Scanner in;
 	private static Properties props;
@@ -73,6 +73,7 @@ public class RunnerExcelToJson {
 				session.close();
 				System.out.println("Terminated!");
 			}
+			HibernateUtility.shutdown();
 			System.exit(0);
 		}
 	}

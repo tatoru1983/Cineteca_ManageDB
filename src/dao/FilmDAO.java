@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -23,6 +24,19 @@ public class FilmDAO {
 	public List<Film> getAll(){
 		TypedQuery<Film> query = session.createQuery("from Film");
 		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Film> getFilmByDVD(Integer numDVD){
+		FilmRatingDAO filmRatingDAO = new FilmRatingDAO(session);
+		TypedQuery<Film> query = session.createQuery("from Film where dvd = ?");
+		query.setParameter(0, numDVD);
+		List<Film> listFilm = query.getResultList();
+		for(Film film : listFilm) {
+			List<FilmRating> filmRating = filmRatingDAO.getRatingsByFilm(film);
+			film.setFilmRating(filmRating);
+		}
+		return listFilm;
 	}
 
 	@SuppressWarnings("unchecked")
