@@ -19,3 +19,7 @@ The JSON file is converted to a structured POJO Object with the informations of 
 ### Step 3.
 
 Save the information into DB MySQL
+
+```
+The informations about DB and OMDB Token are obfuscated by a properties file
+```
