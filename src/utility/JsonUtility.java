@@ -41,10 +41,12 @@ public class JsonUtility {
 		movie.setPoster((String)jsonObject.get("Poster"));
 
 		JSONArray ratings= (JSONArray) jsonObject.get("Ratings");
-		for (Object o : ratings) {
-			JSONObject rating = (JSONObject)o;
-			movie.addRating(getRatingFromJSON(rating));
-		}	
+		if(ratings!=null) {
+			for (Object o : ratings) {
+				JSONObject rating = (JSONObject)o;
+				movie.addRating(getRatingFromJSON(rating));
+			}
+		}
 		return movie;
 	}
 

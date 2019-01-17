@@ -11,7 +11,7 @@ public class RunnerDeleteDB {
 	public static void main(String[] args) {
 		Session session = null;
 		try {
-			Integer input = new Integer("185");
+			Integer input = new Integer("253");
 			
 			//DAO
 			SessionFactory sessionFactory = HibernateUtility.getSessionFactory();

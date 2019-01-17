@@ -37,7 +37,7 @@ public class RunnerExcelToDB {
 	public static void main(String[] args) {
 		Session session = null;
 		String input = "";
-		List<String> inputList = getListFromRange(185, 200);
+		List<String> inputList = getListFromRange(253, 267);
 		try {
 
 			//DAO
