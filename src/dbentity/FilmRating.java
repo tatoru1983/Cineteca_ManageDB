@@ -79,4 +79,9 @@ public class FilmRating implements Serializable {
 		this.id.setSource(rating.getSource());
 		this.value = rating.getValue();
 	}
+
+	@Override
+	public String toString() {
+		return "FilmRating [id=" + id + ", value=" + value + "]";
+	}
 }

@@ -1,4 +1,6 @@
 /bin/
+/tokens/
+/src/credentials.json
 /src/foobar.config
 /src/hibernate.cfg.xml
 /src/cineteca.xlsx

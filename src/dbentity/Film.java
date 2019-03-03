@@ -271,4 +271,13 @@ public class Film implements Serializable {
 			}
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "Film [imdbID=" + imdbID + ", title=" + title + ", year=" + year + ", rated=" + rated + ", released="
+				+ released + ", runtime=" + runtime + ", genre=" + genre + ", director=" + director + ", writer="
+				+ writer + ", actors=" + actors + ", plot=" + plot + ", country=" + country + ", awards=" + awards
+				+ ", poster=" + poster + ", titleIta=" + titleIta + ", seen=" + seen + ", dvd=" + dvd + ", filmRating="
+				+ filmRating + "]";
+	}
 }
