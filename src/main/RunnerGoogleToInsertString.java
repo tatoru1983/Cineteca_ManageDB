@@ -25,7 +25,7 @@ import utility.HibernateUtility;
 import utility.IMDBUtility;
 import utility.PropertiesUtility;
 
-public class RunnerGoogleToDB {
+public class RunnerGoogleToInsertString {
 
 	private static Scanner in;
 	private static Properties props;
@@ -54,10 +54,10 @@ public class RunnerGoogleToDB {
 		try {
 
 			//DAO
-			SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
-			session = sessionFactory.openSession();
-			FilmDAO filmDAO = new FilmDAO(session);
-			FilmRatingDAO filmRatingDAO = new FilmRatingDAO(session);
+			//SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+			//session = sessionFactory.openSession();
+			//FilmDAO filmDAO = new FilmDAO(session);
+			//FilmRatingDAO filmRatingDAO = new FilmRatingDAO(session);
 
 			String range = sheetName.concat("!A1:C2000");
 			//Read rows from Google Drive
@@ -74,32 +74,32 @@ public class RunnerGoogleToDB {
 
 				List<Film> films = new ArrayList<Film>();
 				for(Movie movie : movies) {
-					System.out.println(movie.getTitle() + " - " + movie.getTitleIta());
+					//System.out.println(movie.getTitle() + " - " + movie.getTitleIta());
 					//Transform to DB entities
 					Film film = new Film(new Integer(input), movie);
 					films.add(film);
 				}
 
 				for(Film film : films) {
-					filmDAO.save(film);
-					//System.out.println(film.toString());
+					//filmDAO.save(film);
+					System.out.println(film.toInsertString());
 					for(FilmRating filmRating : film.getFilmRating()) {
-						filmRatingDAO.save(filmRating);
-						//System.out.println(filmRating.toString());
+						//filmRatingDAO.save(filmRating);
+						System.out.println(filmRating.toInsertString());
 					}
 				}
-				System.out.println("DVD "+input+" inserted!");
+				//System.out.println("DVD "+input+" inserted!");
 			}
 			System.out.println("Inserted all! OK");
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			System.err.println("Errore DVD numero: "+input);
 		}finally {
-			if (session != null) {
+			/*if (session != null) {
 				session.close();
 				System.out.println("Terminated!");
 			}
-			HibernateUtility.shutdown();
+			HibernateUtility.shutdown();*/
 			System.exit(0);
 		}
 	}

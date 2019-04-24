@@ -280,4 +280,48 @@ public class Film implements Serializable {
 				+ ", poster=" + poster + ", titleIta=" + titleIta + ", seen=" + seen + ", dvd=" + dvd + ", filmRating="
 				+ filmRating + "]";
 	}
+	
+	public String toInsertString() {
+		return "INSERT INTO FILM ("
+				+ "IMDBID " + 
+				",TITLE " + 
+				",YEAR " + 
+				",RATED " + 
+				",RELEASED " + 
+				",RUNTIME " + 
+				",GENRE " + 
+				",DIRECTOR " + 
+				",WRITER " + 
+				",ACTORS " + 
+				",PLOT " + 
+				",COUNTRY " + 
+				",AWARDS " + 
+				",POSTER " + 
+				",TITLE_ITA " + 
+				",DVD"
+				+ ")"
+				+ "VALUES("
+				+ manageQuote(imdbID)
+				+ "," +manageQuote(title)
+				+ "," +manageQuote(year)
+				+ "," +manageQuote(rated)
+				+ "," +manageQuote(released)
+				+ "," +manageQuote(runtime)
+				+ "," +manageQuote(genre)
+				+ "," +manageQuote(director)
+				+ "," +manageQuote(writer)
+				+ "," +manageQuote(actors)
+				+ "," +manageQuote(plot)
+				+ "," +manageQuote(country)
+				+ "," +manageQuote(awards)
+				+ "," +manageQuote(poster)
+				+ "," +manageQuote(titleIta)
+				+ "," +dvd
+				+ ")"
+				+ ";";
+	}
+	
+	private String manageQuote(String input) {
+		return "'" +input.replaceAll("'", "''") + "'";
+	}
 }

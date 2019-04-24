@@ -84,4 +84,22 @@ public class FilmRating implements Serializable {
 	public String toString() {
 		return "FilmRating [id=" + id + ", value=" + value + "]";
 	}
+	
+	public String toInsertString() {
+		return "INSERT INTO FILM_RATING("
+				+ "IMDBID"
+				+ ",SOURCE"
+				+ ",VALUE"
+				+ ")"
+				+ "VALUES("
+				+ manageQuote(id.getImdbID())
+				+ "," +manageQuote(id.getSource())
+				+ "," +manageQuote(value)
+				+ ")"
+				+ ";";
+	}
+	
+	private String manageQuote(String input) {
+		return "'" +input.replaceAll("'", "''") + "'";
+	}
 }
