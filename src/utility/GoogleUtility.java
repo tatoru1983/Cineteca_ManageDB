@@ -64,5 +64,22 @@ public class GoogleUtility {
 		}
 		return result;
     }
+    
+    public static int getMaxDvd(String spreadsheetId, String cell, NetHttpTransport HTTP_TRANSPORT) throws IOException {
+    	Sheets service = new Sheets.Builder(HTTP_TRANSPORT, GoogleUtility.JSON_FACTORY, GoogleUtility.getCredentials(HTTP_TRANSPORT))
+				.setApplicationName(GoogleUtility.APPLICATION_NAME).build();
+		ValueRange response = service.spreadsheets().values().get(spreadsheetId, cell).execute();
+		List<List<Object>> values = response.getValues();
+		if (values == null || values.isEmpty()) {
+			System.out.println("No data found.");
+			return 0;
+		} else {
+			int result = 0;
+			for (List row : values) {
+				result = Integer.parseInt(row.get(0).toString());
+			}
+			return result;
+		}
+    }
 
 }
