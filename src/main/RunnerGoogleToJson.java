@@ -10,6 +10,7 @@ import java.util.Scanner;
 import org.hibernate.Session;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -36,12 +37,17 @@ public class RunnerGoogleToJson {
 		}
 	};
 
-	public static void main(String[] args) throws IOException, GeneralSecurityException {
+	public static void main(String[] args) throws IOException, GeneralSecurityException, ParseException {
 		String folder = args[0];
 		int lastDvd = 0;
 		String fileNameJson = "movies";
 		
 		//file con l'ultimo DVD inserito
+		JSONArray array = JsonUtility.file2Json(folder.concat("/").concat(fileNameJson).concat(".json"));
+		for(int i=0; i<array.size(); i++) {
+			JSONObject json = (JSONObject)array.get(i);
+			lastDvd = Integer.parseInt(json.get("DVD").toString());
+		}
 		/*String nameTxtLastDvd = "LAST_DVD.txt";
 		File txtLastDvd = new File(folder.concat(nameTxtLastDvd));
 		if(txtLastDvd!=null && txtLastDvd.exists() && txtLastDvd.length()>0) {
@@ -64,9 +70,9 @@ public class RunnerGoogleToJson {
 		String cell = sheetName.concat("!J1");
 		int maxDvd = GoogleUtility.getMaxDvd(spreadsheetId, cell, HTTP_TRANSPORT);
 		
-		Session session = null;
 		String input = "";
 		List<String> inputList = getListFromRange(lastDvd+1, maxDvd);
+		System.out.println("From "+(lastDvd+1)+" to "+maxDvd);
 		try {
 
 			String range = sheetName.concat("!A1:C2000");
@@ -96,14 +102,13 @@ public class RunnerGoogleToJson {
 					}
 				}*/
 			}
-			JSONArray array = new JSONArray();
 			for(Film film : films) {
 				//1 JSON tutti i film
 				JSONObject jsonFilm = JsonUtility.getJSONFromFilm(film);
 				array.add(jsonFilm);
 			}
 			JsonUtility.writeFileFromJSONArray(array, fileNameJson, folder);
-			
+			System.out.println("Finito!");
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			System.err.println("Errore DVD numero: "+input);

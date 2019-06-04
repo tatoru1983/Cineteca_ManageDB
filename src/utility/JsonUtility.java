@@ -1,12 +1,18 @@
 package utility;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import dbentity.Film;
 import entity.Movie;
@@ -23,7 +29,6 @@ public class JsonUtility {
 		}catch(IOException ex) {
 			ex.printStackTrace();
 		}
-		//FOLDER_JSON = props.getProperty("FOLDER_JSON");
 	};
 
 	public static Movie getMovieFromJSON(JSONObject jsonObject) {
@@ -89,5 +94,12 @@ public class JsonUtility {
 		result.put("IMDBID",film.getImdbID());
 		result.put("DVD",film.getDvd());
 		return result;
+	}
+	
+	public static JSONArray file2Json(String fileName) throws IOException, ParseException {
+		InputStream is = new FileInputStream(fileName);
+        String jsonTxt = IOUtils.toString(is, "UTF-8");
+        JSONParser parser = new JSONParser();
+        return (JSONArray) parser.parse(jsonTxt);
 	}
 }
