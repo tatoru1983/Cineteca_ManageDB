@@ -69,6 +69,10 @@ public class RunnerGoogleToJson {
 		
 		String cell = sheetName.concat("!J1");
 		int maxDvd = GoogleUtility.getMaxDvd(spreadsheetId, cell, HTTP_TRANSPORT);
+
+		//TEST
+		//lastDvd = 200;
+		//maxDvd = 200;
 		
 		String input = "";
 		List<String> inputList = getListFromRange(lastDvd+1, maxDvd);

@@ -1,11 +1,11 @@
 package utility;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
@@ -15,6 +15,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import dbentity.Film;
+import dbentity.FilmRating;
 import entity.Movie;
 import entity.Rating;
 
@@ -93,6 +94,21 @@ public class JsonUtility {
 		result.put("POSTER",film.getPoster());
 		result.put("IMDBID",film.getImdbID());
 		result.put("DVD",film.getDvd());
+		List<FilmRating> ratings = film.getFilmRating();
+		JSONArray arrayRatings = new JSONArray();
+		for(FilmRating filmRating : ratings) {
+			JSONObject obj = getJSONFromFilmRating(filmRating);
+			arrayRatings.add(obj);
+		}
+		result.put("RATINGS", arrayRatings);
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static JSONObject getJSONFromFilmRating(FilmRating filmRating) {
+		JSONObject result = new JSONObject();
+		result.put("SOURCE",filmRating.getId().getSource());
+		result.put("VALUE",filmRating.getValue());
 		return result;
 	}
 	
